@@ -1,0 +1,14 @@
+---
+title: 'Lab #2'
+author: "Jay Maxwell"
+output: html_document
+---
+<h4>DS202</h4>
+<h4>Fall 2020</h4>
+<hr>
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+This is the individual R Markdown file for Jay Maxwell
