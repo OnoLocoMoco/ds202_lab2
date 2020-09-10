@@ -9,6 +9,32 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
 ```
 
 This is the individual R Markdown file for Jay Maxwell
+
+Here is a histogram for the ratings of the Chocolate data set. It appears to be left-skewed. 
+```{r }
+hist(choco$Rating)
+boxplot(choco$Rating ~ choco$Location)
+
+```
+
+Here we examine the rating by Location
+```{r }
+boxplot(choco$Rating ~ choco$Location)
+
+```
+
+```{r }
+
+boxplot(choco$Rating ~ choco$Company)
+
+```
+
+```{r }
+
+
+```
+
