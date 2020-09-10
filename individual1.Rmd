@@ -33,8 +33,11 @@ boxplot(choco$Rating ~ choco$Company)
 
 ```
 
-```{r }
 
+The following is a bar chart of the number of ratings in each year
+```{r }
+years = table(choco$Date)
+barplot(years, main="Number of ratings each year", xlab='Year', ylab='Number of ratings' )
 
 ```
 
