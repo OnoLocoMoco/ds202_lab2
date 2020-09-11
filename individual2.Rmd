@@ -4,27 +4,54 @@ author: "Tessa Mendoza"
 date: "9/10/2020"
 output: html_document
 ---
+##Searching for the Best Chocolates
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+1) How are the ratings distributed? Create both a histogram and a boxplot and describe them. Don’t forget to mention outliers, if there are any.
+```{r, echo = FALSE}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
+hist(choco$Rating, xlab = "chocolate rating", main = 'Histogram of Chocolate Rating')
+boxplot(choco$Rating, ylab = "chocolate rating", main = 'Boxplot of Chocolate Rating')
 ```
 
-## R Markdown
+As shown in the plots above, the histogram of frequency of chocolate rating between 1 and 5 is skewed left. That is, there is a much larger representation of ratings between 2.5 and 4.0. Interestingly, there is not a given rating above 4.0, and only a couple below 2.5. However, being that these 'outlying' points fall within the rating range and include several of the same rating, they were kept in the data and will be considered during analysis. As shown in the histogram, the median of the data is around 3.25.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+2) How does the number of ratings depend on the year? Draw a bar chart of the number of reports. 
+```{r, echo = FALSE}
+years = choco$Date
+years.freq = table(years)
+barplot(years.freq, xlab = "year", ylab = 'number of ratings', main = 'Number of Ratings by Year')
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
 ```
 
-## Including Plots
+As shown above, there is an overall increase in the number of ratings per year between 2006 and 2020. The year 2015 has the highest number of ratings, and 2020 has the lowest (perhaps because it is the current year). 
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+3) Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain.
+```{r, echo = FALSE}
+choco$PercentRange <- ((choco$Cocoa_Percent) %/% 10) * 10
+boxplot(choco$Rating ~ choco$PercentRange, xlab = "Cacao Percent Range", main = 'Chocolate Bar Rating by Cacao Percent', ylab = "Rating")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Yes, the rating of a chocolate bar is correlated to the cacao percentage of that bar. This is evident from the boxplot above, which shows how each 10% range of cacao percent (with a bar of 54%, for example, falling into the 50% range) varies its interquartile range and median value. As we see from this initial analysis, the IQR is much smaller for chocolate bars with 50-80% cacao, but the range increases for chocolate bars above 90% cacao. In addition, the median rating drops significantly for chocolate bars with 100% cacao. Thus, overall, the rating of chocolate with 100% cacao is lower than chocolate with lower percentage cacao. In fact, the table below provides a numerical summary of the mean rating score for each cacao percent range. The average rating for 60% chocolate bars, 3.21, is much higher than the 100% bars at 2.25.
+```{r}
+M <- tapply(choco$Rating, INDEX = choco$PercentRange, FUN = mean)
+M
+```
+4) 
+```{r}
+commonwords <- sort(table(choco$Characteristics1))
+creamy <- choco[choco$Characteristics1 == 'creamy', ]
+sandy <- choco[choco$Characteristics1 == 'sandy', ]
+gritty <- choco[choco$Characteristics1 == 'gritty', ]
+nutty <- choco[choco$Characteristics1 == 'nutty', ]
+tart <- choco[choco$Characteristics1 == 'tart', ]
+char_means <- data.frame(mean(creamy$Rating), mean(sandy$Rating), mean(gritty$Rating), mean(nutty$Rating), mean(tart$Rating))
+print(char_means)
+```
+```{r, echo = FALSE}
+boxplot(sandy$Rating, tart$Rating, creamy$Rating, gritty$Rating, nutty$Rating, names = c('sandy', 'tart', 'creamy', 'gritty', 'nutty'), main = "Boxplot of Rating by Characterizing Word", ylab = 'Rating')
+```
+
+To explore the chocolate characteristics and how they are related to rating, I analyzed a handful of the most frequently used characterizing words from the "Characteristics1" category. Thus, these were the most commonly used intiial describing word for the chocolate tasted. As shown in both the graph and the table, different characteristics are indeed rated differently. Chocolate described as "tart" or "creamy" have higher ratings (both mean and median) than gritty and nutty - although there are a couple of creamy bars with outlying lower ratings. Highlighted in the table, the creamy bars have over half a point higher mean rating compared to the nutty bars. This analysis suggests that, from these five characteristics, creamy and tart chocolates are more favorable than gritty chocolate. 
+
+
+5) As a group, we discussed analyzing how the percentage of cacao in a chocolate bar and the origin location of the chocolate may affect how it is rated, and thus, it's overall taste. To do this, we will determine the mean and median data for chocolate at each percentage, or in a range of percentages, and graph it against each other. For the location, we consider grouping by region and determining mean rating. 
