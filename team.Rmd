@@ -1,0 +1,33 @@
+---
+title: "Lab 2 Collaboration"
+author: "Team 21"
+date: "9/11/2020"
+output: html_document
+---
+**Searching for the Best Chocolates**
+
+In our individual work, we analyzed the distribution of chocolate bar ratings and how the number of ratings differ per year. As a group, we then identified a number of variables with possible effects on rating, and thus, overall taste. Therefore, our collaborative effort aims to analyze how the percentage of cacao in a chocolate bar, the origin location of the chocolate, and ________ may affect rating its (and taste).
+
+*Cacao Percentage*
+
+To begin, we discovered that the rated chocolate bars had cacao percentages ranging from 42% to 100%. For further analysis, we grouped the percentages into ten-percent ranges from 40 to 100. Meaning, a bar of 54% cacao and a bar of 59% cacao would both be grouped into the 50% range. This data was graphed in a boxplot to visualize the median and general distribution of the data. 
+
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
+sort(unique(choco$Cocoa_Percent))
+```
+```{r}
+choco$PercentRange <- ((choco$Cocoa_Percent) %/% 10) * 10
+plot <- boxplot(choco$Rating ~ choco$PercentRange, xlab = "Cacao Percent Range", main = 'Chocolate Bar Rating by Cacao Percent', ylab = "Rating")
+```
+```{r}
+M <- tapply(choco$Rating, INDEX = choco$PercentRange, FUN = mean)
+print(M)
+```
+Next, we calculated the mean rating value for each percentage range (shown above). To better visualize this, points were added to the boxplot. This completed figure provides great insight into the relationship between cacao percenteage and overall rating. Chocolate bars in the 60 and 70 percent range had the highest mean and median ratings, and mean score decreased as the percent deviated from this range. Meaning, chocolate bars at 100% cacao had a mean score of 2.25, much lower than the 70% bars at 3.21 (almost a full point difference!). In conclusion, this portion of our analysis suggests a casual relationship between cacao percent and chocolate bar rating - for chocolate bars 70% or higher, as the percent cacao increases, the rating decreases. Thus, cacao percentage does have an effect on taste.
+```{r}
+Mplot<- boxplot(choco$Rating ~ choco$PercentRange, xlab = "Cacao Percent Range", main = 'Chocolate Bar Rating by Cacao Percent', ylab = "Rating")
+points(M, col = "blue", pch = "x", cex = 1.5)
+```
+
+*Location*
