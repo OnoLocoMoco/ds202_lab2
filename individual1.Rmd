@@ -12,32 +12,56 @@ library(ggplot2)
 choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
 ```
 
-This is the individual R Markdown file for Jay Maxwell
 
-Here is a histogram for the ratings of the Chocolate data set. It appears to be left-skewed. 
+1. How are the ratings distributed? Create both a histogram and a boxplot and describe them.
+
 ```{r }
 hist(choco$Rating)
-boxplot(choco$Rating ~ choco$Location)
+boxplot(choco$Rating)
+summary(choco$Rating)
+``` 
+
+Here is a histogram for the ratings of the Chocolate data set. It appears to be left-skewed, in that there are many more rating on the higher side than on the lower end of the rating scale. The lowest rating is a 1 and the highest rating is a 4, and the median rating is 3.25. There are some outlier low ratings below 2 as shown in the boxplot. 
+
+
+
+2. How does the number of ratings depend on the year
+
+```{r}
+t1 = table(choco$Date)
+barplot(t1, main='Number of ratings per year', xlab='Year', ylab = 'Count', las=2)
+```
+
+The number of ratings per year in the data set show a rising number of entries each year through 2015, then a decline in the number of entries per year after that. 2017 seems to have an oddly low number of entries, What could have led to that? 2020 is low because the year is not over  yet thus incomplete compared to the other years. 
+
+3. Do ratings depend on the cacao percentage of a chocolate bar? 
+``` {r}
+boxplot(choco$Rating ~ choco$Cocoa_Percent, main = 'Rating by Cacao Percent', xlab='Percentage Cacoa',  ylab = "Rating", las=2)
 
 ```
 
-Here we examine the rating by Location
+I think the percentage of cacao only seems to affect the ratings at particularly high concentrations. Most of the mean ratings and the ranges for the scores are quite similar from the mid 50s up to the low 80s. As the percentage of cacao increases from there, there is greater variability in the both the rating means and IQR. 
+
+<hr>
+<h5>collaboration</h5>
+<hr>
+I am interested in how the combination of ingredients relates to the overall rating score. Because the ingredients is a categorical variable consisting of ingredient combination, we can make a factor of that data column and extract the levels from that list of factors. I will use that in my boxplot to show the relationship between the the rating and the ingredient combinations. 
+
 ```{r }
-boxplot(choco$Rating ~ choco$Location)
+
+
+ing_factor = factor(choco$Ingredients)
+ing_lvl = levels(ing_factor)
+choco_type2 <- factor(choco$Ingredients, levels = ing_lvl)
+boxplot(choco$Rating ~ choco_type2, las=2)
 
 ```
 
-```{r }
-
-boxplot(choco$Rating ~ choco$Company)
-
-```
+This shows us which combination of ingredients leads to which rating. For instance, the combination of ingredients with the highest mean rating would be the 3-BSV indicating beans, sugar and vanilla. Another three ingredient combination, Beans, alternative sweetener, and salt had the lowest mean score of around 2.5
 
 
-The following is a bar chart of the number of ratings in each year
-```{r }
-years = table(choco$Date)
-barplot(years, main="Number of ratings each year", xlab='Year', ylab='Number of ratings' )
 
-```
 
+
+
+ 
