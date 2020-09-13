@@ -31,3 +31,28 @@ points(M, col = "blue", pch = "x", cex = 1.5)
 ```
 
 *Location*
+
+To analyze the country of origin and it's affect on the rating of the chocolate, we first had to create a vector because of the categorical nature of the data. We created a vector for the origin of the bean also created levels from there. After this preparation we were able to create plots for graphical analysis. 
+
+```{r}
+country <- factor(choco$Bean_Origin)
+countrylvl <- levels(country)
+place <- factor(choco$Bean_Origin, levels = countrylvl)
+##First Plot
+plot(choco$Rating ~ place, las=2, ylab = "Rating", xlab = ".")
+length(place) = 20
+table(choco$Bean_Origin)
+worstrating <- choco[order(choco$Rating), ]
+worst20 <- head(worstrating, n = 20)
+worst20
+#Worst 20 Ratings plot
+plot(worst20$Rating ~ place, horizontal=TRUE, las=2, ylab = "Rating", xlab = ".")
+bestrating <- choco[order(-choco$Rating), ]
+best20 <- head(bestrating, n = 20)
+best20
+##Best 20 Ratings plot
+plot(best20$Rating ~ place, horizontal=TRUE, las=2, ylab = "Rating", xlab = ".")
+```
+
+These three plots show the ratings for every country individually, the 20 lowest ratings and their corresponding countries, and the 20 highest ratings and their corresponding countries. In looking at the first plot, it is clear the average ratings remain relatively consistent from country to country. There are only a small handful of countries that produce an average below 3 and it seems that the overall average rating is somewhere between 3-3.5. The plot showing the lowest 20 ratings and their corresponding countries shows that the lowest rated chocolates are consistently coming from the same few places. There is less than 10 countries producing the lowest rated (scores of 1-2) chocolate. This is in contrast to the plot showing the highest 20 ratings and their corresponding countries, where the chocolates with a rating of 4 are coming from over 20 unique countries. These plots show that where the chocolate comes from is important, but only for extremely high quality and extremely low quality chocolate. The likelihood of getting a chocolate bar with an average score of about 3 or 3.5 from any given country is high. The countries consistently producing very highly rated chocolate or very low rated chocolate are few and far between. 
+

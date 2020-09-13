@@ -1,28 +1,54 @@
 ---
-title: "individual3.rmd"
+title: "Lab 2"
+author: "Becca Barrick"
+date: "9/13/2020"
 output: html_document
 ---
+##Searching for the Best Chocolates
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+1. How are the ratings distributed? Create both a histogram and a boxplot and describe them. Don’t forget to mention outliers, if there are any.
+```{r echo = FALSE}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
+hist(choco$Rating, xlab = "chocolate rating", main = "Histogram of Chocolate Ratings")
+boxplot(choco$Rating, ylab = "chocolate rating", main = "Boxplot of Chocolate Ratings")
 ```
 
-## R Markdown
+The histogram shows that the ratings are skewed left. Most ratings lie between 2.75 and 3.75. Very few chocolate bars have a rating below 2.5. The boxplot shows some obvious "outliers" between ratings of 1 and 2. They seem like outliers but are still in the range of normal rating.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+2. How does the number of ratings depend on the year? Draw a bar chart of the number of reports.
+```{r, echo = FALSE}
+years = choco$Date
+table(years)
+date <- table(years)
+barplot(date, xlab = "Year", ylab = "Frequency of Votes", main = "Number of Ratings per Year")
 ```
 
-## Including Plots
+This barplot shows that the number of ratings had an overall steady increase from 2006 to 2015. There was then some random drops in amount of ratings in 2017 and 2020. 2020 has the lowest amount of ratings, most likely because the year is only 3/4 over. 
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+3. Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain.
+```{r, echo =FALSE}
+plot(choco$Cocoa_Percent, choco$Rating, xlab = "Percent Cocoa", ylab = "Rating", main = "Ratings by Percent Cocoa")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Yes, ratings depend on the cocoa percentage of a chocolate bar. This plot shows that the bars with the highest ratings have a cocoa percentage in the middle range, around 60-80 percent. The majority of bars have a cocoa percentage of 70-75. This summary provides the most outliers in my opinion, because some chocolate bars with 40% cocoa or even 100% cocoa have ratings between 1-3.5. This analysis seems less consistent. 
+
+4. How do different characteristics of the chocolate compare? To elaborate, which characteristics tend to be more favorable and which ones are not? Create both numerical and graphical summaries, and explain.
+```{r, echo =FALSE}
+ingredients <- factor(choco$Ingredients)
+inglevel <- levels(ingredients)
+type <- factor(choco$Ingredients, levels = inglevel)
+plot(choco$Rating ~ type, xlab = "Ingredient Combination", ylab = "Rating", main = "Ratings Based on Ingredients")
+
+```
+
+This analysis takes a lot at the ratings of chocolate based on ingredients. We can see in the plot that there are a few different ingredient combinations that lead to lower or higher ratings. For example, the combination of BS, meaning beans and sugar, has an average rating of about 3.25. The combination of beans, salt, and alternative sweetener, on the other hand, has an average rating of about 2.5. 
+
+5. Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
+
+As a group we will be analyzing the cocoa percentage and origin of cocoa bar. Both of these things will affect the taste of chocolate, therefore the rating. 
+
+
+
+
+
+
