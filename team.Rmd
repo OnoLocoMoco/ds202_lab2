@@ -4,11 +4,12 @@ author: "Team 21"
 date: "9/11/2020"
 output: html_document
 ---
-**Searching for the Best Chocolates**
 
-In our individual work, we analyzed the distribution of chocolate bar ratings and how the number of ratings differ per year. As a group, we then identified a number of variables with possible effects on rating, and thus, overall taste. Therefore, our collaborative effort aims to analyze how the percentage of cacao in a chocolate bar, the origin location of the chocolate, and ________ may affect rating its (and taste).
+<h3>Searching for the Best Chocolates</h3>
 
-*Cacao Percentage*
+In our individual work, we analyzed the distribution of chocolate bar ratings and how the number of ratings differ per year. As a group, we then identified a number of variables with possible effects on rating, and thus, overall taste. Therefore, our collaborative effort aims to analyze how the percentage of cacao in a chocolate bar, the origin location of the chocolate, and the combinations of ingredients may affect its rating. 
+
+<h4>Cacao Percentage</h4>
 
 To begin, we discovered that the rated chocolate bars had cacao percentages ranging from 42% to 100%. For further analysis, we grouped the percentages into ten-percent ranges from 40 to 100. Meaning, a bar of 54% cacao and a bar of 59% cacao would both be grouped into the 50% range. This data was graphed in a boxplot to visualize the median and general distribution of the data. 
 
@@ -24,13 +25,14 @@ plot <- boxplot(choco$Rating ~ choco$PercentRange, xlab = "Cacao Percent Range",
 M <- tapply(choco$Rating, INDEX = choco$PercentRange, FUN = mean)
 print(M)
 ```
+
 Next, we calculated the mean rating value for each percentage range (shown above). To better visualize this, points were added to the boxplot. This completed figure provides great insight into the relationship between cacao percenteage and overall rating. Chocolate bars in the 60 and 70 percent range had the highest mean and median ratings, and mean score decreased as the percent deviated from this range. Meaning, chocolate bars at 100% cacao had a mean score of 2.25, much lower than the 70% bars at 3.21 (almost a full point difference!). In conclusion, this portion of our analysis suggests a casual relationship between cacao percent and chocolate bar rating - for chocolate bars 70% or higher, as the percent cacao increases, the rating decreases. Thus, cacao percentage does have an effect on taste.
 ```{r}
 Mplot<- boxplot(choco$Rating ~ choco$PercentRange, xlab = "Cacao Percent Range", main = 'Chocolate Bar Rating by Cacao Percent', ylab = "Rating")
 points(M, col = "blue", pch = "x", cex = 1.5)
 ```
 
-*Location*
+<h4>Location</h4>
 
 To analyze the country of origin and it's affect on the rating of the chocolate, we first had to create a vector because of the categorical nature of the data. We created a vector for the origin of the bean also created levels from there. After this preparation we were able to create plots for graphical analysis. 
 
@@ -56,3 +58,16 @@ plot(best20$Rating ~ place, horizontal=TRUE, las=2, ylab = "Rating", xlab = ".")
 
 These three plots show the ratings for every country individually, the 20 lowest ratings and their corresponding countries, and the 20 highest ratings and their corresponding countries. In looking at the first plot, it is clear the average ratings remain relatively consistent from country to country. There are only a small handful of countries that produce an average below 3 and it seems that the overall average rating is somewhere between 3-3.5. The plot showing the lowest 20 ratings and their corresponding countries shows that the lowest rated chocolates are consistently coming from the same few places. There is less than 10 countries producing the lowest rated (scores of 1-2) chocolate. This is in contrast to the plot showing the highest 20 ratings and their corresponding countries, where the chocolates with a rating of 4 are coming from over 20 unique countries. These plots show that where the chocolate comes from is important, but only for extremely high quality and extremely low quality chocolate. The likelihood of getting a chocolate bar with an average score of about 3 or 3.5 from any given country is high. The countries consistently producing very highly rated chocolate or very low rated chocolate are few and far between. 
 
+<h4>Ingredients</h4>
+
+Our final analysis is how the combinations of ingredients relate to the overall rating score. Because "ingredients" is a categorical variable consisting of various ingredient combinations, we can make a factor of that data column and extract the levels from that list of factors. We will use that in our boxplot to show the relationship between the the rating and the ingredient combinations. It is very convenient that the names for the ingredients begin with the number of ingredients, because the levels will default to alphabetical order. That will make interpreting the graph easy, without having to re-sort our data. 
+
+```{r }
+ing_factor = factor(choco$Ingredients)
+ing_lvl = levels(ing_factor)
+choco_type2 <- factor(choco$Ingredients, levels = ing_lvl)
+boxplot(choco$Rating ~ choco_type2, main='Rating by Ingredients', ylab='Rating', xlab='', las=2, cex.axis=.6)
+mtext(text= 'Ingredient Combinations', side=1, line=4)   #move the y label down so it doesn't overlap the axis data
+```
+
+This shows us which combination of ingredients leads to which rating. For instance, the combination of ingredients with the highest mean rating would be the 3-BSV indicating beans, sugar and vanilla. Another three ingredient combination, Beans, alternative sweetener, and salt had the lowest mean score of around 2.5. 

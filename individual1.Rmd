@@ -36,16 +36,16 @@ The number of ratings per year in the data set show a rising number of entries e
 
 3. Do ratings depend on the cacao percentage of a chocolate bar? 
 ``` {r}
-boxplot(choco$Rating ~ choco$Cocoa_Percent, main = 'Rating by Cacao Percent', xlab='Percentage Cacoa',  ylab = "Rating", las=2)
+boxplot(choco$Rating ~ choco$Cocoa_Percent, main = 'Rating by Cacao Percent', xlab='Percentage Cacoa',  ylab = 'Rating', las=2)
 
 ```
 
-I think the percentage of cacao only seems to affect the ratings at particularly high concentrations. Most of the mean ratings and the ranges for the scores are quite similar from the mid 50s up to the low 80s. As the percentage of cacao increases from there, there is greater variability in the both the rating means and IQR. 
+I think the percentage of cacao only seems to affect the ratings at particularly high concentrations. Most of the mean ratings and the ranges for the scores are quite similar from the mid 50s up to the low 80s. As the percentage of cacao increases from there, there is greater variability in the both the rating means and IQR. There is definitely not a linear relationship between the two variables. I do not believe that the ratings depend heavily on the percentage of cacao. 
 
 <hr>
 <h5>collaboration</h5>
 <hr>
-I am interested in how the combination of ingredients relates to the overall rating score. Because the ingredients is a categorical variable consisting of ingredient combination, we can make a factor of that data column and extract the levels from that list of factors. I will use that in my boxplot to show the relationship between the the rating and the ingredient combinations. 
+My portion is examining how the combinations of ingredients relate to the overall rating score. Because the ingredients is a categorical variable consisting of various ingredient combinations, we can make a factor of that data column and extract the levels from that list of factors. I will use that in my boxplot to show the relationship between the the rating and the ingredient combinations. It is very convenient that the names for the ingredients begin with the number of ingredients, because the levels will default to alphabetical order. That will make interpreting the graph easy, without having to re-sort our data. 
 
 ```{r }
 
@@ -53,11 +53,12 @@ I am interested in how the combination of ingredients relates to the overall rat
 ing_factor = factor(choco$Ingredients)
 ing_lvl = levels(ing_factor)
 choco_type2 <- factor(choco$Ingredients, levels = ing_lvl)
-boxplot(choco$Rating ~ choco_type2, las=2)
+boxplot(choco$Rating ~ choco_type2, main='Rating by Ingredients', ylab='Rating', xlab='', las=2, cex.axis=.6)
+mtext(text= 'Ingredient Combinations', side=1, line=4)   #move the y label down so it doesn't overlap the axis data
 
 ```
 
-This shows us which combination of ingredients leads to which rating. For instance, the combination of ingredients with the highest mean rating would be the 3-BSV indicating beans, sugar and vanilla. Another three ingredient combination, Beans, alternative sweetener, and salt had the lowest mean score of around 2.5
+This shows us which combination of ingredients leads to which rating. For instance, the combination of ingredients with the highest mean rating would be the 3-BSV indicating beans, sugar and vanilla. Another three ingredient combination, Beans, alternative sweetener, and salt had the lowest mean score of around 2.5.
 
 
 
